@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 
 /**
  * Users Controller
@@ -30,13 +31,17 @@ class UsersController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         // Permet aux utilisateurs de s'enregistrer et de se déconnecter
-        $this->Auth->allow('logout', 'register');
+        $this->Auth->allow('logout', 'login', 'register', 'activate');
     }
 
     public function login() {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
-                return $this->redirect(array('controller' => 'shipments', 'action' => 'index'));
+                //if ($this->User->Find() == 1) {
+                    return $this->redirect(array('controller' => 'shipments', 'action' => 'index'));
+                //} else {
+                //    $this->Flash->error(__("User is not activated"));
+                //}
             } else {
                 $this->Flash->error(__("Invalid username or password"));
             }
@@ -72,6 +77,8 @@ class UsersController extends AppController {
             if ($this->data['User']['password'] == $this->data['User']['password_confirm']) {
                 $this->User->create();
                 if ($this->User->save($this->request->data)) {
+                    $d = $this->request->data;
+                    $this->send_mail($d['User']['email'], $d['User']['username'], $this->User->getInsertID(), $d['User']['password']);
                     $this->Session->setFlash(__('The user has been saved'), 'flash/success');
                     $this->redirect(array('action' => 'index'));
                 } else {
@@ -85,10 +92,13 @@ class UsersController extends AppController {
 
     public function register() {
         if ($this->request->is('post')) {
+            $data = $this->request->data;
             if ($this->data['User']['password'] == $this->data['User']['password_confirm']) {
                 $this->request->data['User']['role'] = 'super-user';
                 $this->User->create();
                 if ($this->User->save($this->request->data)) {
+                    $d = $this->request->data;
+                    $this->send_mail($d['User']['email'], $d['User']['username'], $this->User->getInsertID(), $d['User']['password']);
                     $this->Session->setFlash(__('The user has been saved'), 'flash/success');
                     $this->redirect(array('action' => 'login'));
                 } else {
@@ -97,6 +107,20 @@ class UsersController extends AppController {
             } else {
                 $this->Session->setFlash(__('The password do not match. Please, try again.'), 'flash/error');
             }
+        }
+    }
+
+    public function activate($link) {
+        $linkA = explode('-', $link);
+        $user = $this->User->find('first', array('conditions' => array('id' => $linkA[0], 'active' => 0)));
+        if (!empty($user)) {
+            $this->User->id = $user['User']['id'];
+            $this->User->saveField('active', 1);
+            $this->Session->setFlash('Account Active');
+            $this->redirect(array('action' => 'login'));
+        } else {
+            $this->Session->setFlash('Error, user do not exist');
+            $this->redirect('/');
         }
     }
 
@@ -160,6 +184,15 @@ class UsersController extends AppController {
 
 
         return parent::isAuthorized($user);
+    }
+
+    public function send_mail($recipient = null, $username = null, $id = null, $password = null) {
+        $link = array('controller' => 'users', 'action' => 'activate', $id . '-' . $password);
+        App::uses('CakeEmail', 'Network/Email');
+        $mail = new CakeEmail('gmail');
+        $mail->from('noreply@localhost.com')->to($recipient)->subject('Mail Confirm');
+        $mail->emailFormat('html')->template('activate')->viewVars(array('username' => $username, 'link' => $link));
+        $mail->send();
     }
 
 }

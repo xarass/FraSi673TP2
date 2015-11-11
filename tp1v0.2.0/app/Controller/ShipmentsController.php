@@ -10,6 +10,7 @@ App::uses('AppController', 'Controller');
  */
 class ShipmentsController extends AppController {
 
+    public $helpers = array('Js');
     /**
      * Components
      *
@@ -40,8 +41,12 @@ class ShipmentsController extends AppController {
         }
         $options = array('conditions' => array('Shipment.' . $this->Shipment->primaryKey => $id));
         $this->set('shipment', $this->Shipment->find('first', $options));
+        $shipment = $this->Shipment->find('first', $options);
+        $this->set('shipment', $shipment);
+        $this->set('category',$this->Shipment->Subcategory->Category->find('first', array('conditions' => array('id' => $shipment['Subcategory']['category_id']))));
     }
 
+        
     /**
      * add method
      *
@@ -60,7 +65,10 @@ class ShipmentsController extends AppController {
         }
         $harbors = $this->Shipment->Harbor->find('list');
         $products = $this->Shipment->Product->find('list');
-        $this->set(compact('harbors', 'products'));
+                
+        $categories = $this->Shipment->Subcategory->Category->find('list');
+        $subcategories = $this->Shipment->Subcategory->find('list', array('conditions' => array('category_id' => 1)));
+        $this->set(compact('harbors', 'products', 'categories', 'subcategories'));
     }
 
     /**
@@ -88,8 +96,18 @@ class ShipmentsController extends AppController {
         }
         $harbors = $this->Shipment->Harbor->find('list');
         $products = $this->Shipment->Product->find('list');
-        $this->set(compact('harbors', 'products'));
+        
+        $categories = $this->Shipment->Subcategory->Category->find('list');
+        $this->request->data['Shipment']['category_id'] = $this->request->data['Subcategory']['category_id'];
+        if (isset($this->request->data['Subcategory']['category_id'])) {
+            $subcategories = $this->Shipment->Subcategory->find('list', array('conditions' => array('category_id' => $this->request->data['Subcategory']['category_id'])));
+        } else {
+            $subcategories = $this->Shipment->Subcategory->find('list', array('conditions' => array('category_id' => 1)));
+        }
+        $this->set(compact('harbors', 'products', 'categories', 'subcategories'));
     }
+    
+        
 
     /**
      * delete method

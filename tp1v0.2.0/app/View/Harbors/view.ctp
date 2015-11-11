@@ -85,6 +85,12 @@
                                 <?php echo h($harbor['Harbor']['location']); ?>
                                 &nbsp;
                             </td>
+                        </tr><tr>		<td><strong><?php echo __('Picture'); ?></strong></td>
+                            <td>
+                                <?php if ($harbor['Harbor']['filename']) echo $this->Html->image($harbor['Harbor']['filename'], array('escape' => false, 'height' => '250px'));?>
+
+                                &nbsp;
+                            </td>
                         </tr>					</tbody>
                 </table><!-- /.table table-striped table-bordered -->
             </div><!-- /.table-responsive -->
@@ -129,7 +135,6 @@
                 </div><!-- /.table-responsive -->
 
 <?php endif; ?>
-
 
             <div class="actions">
 <?php echo $this->Html->link('<i class="icon-plus icon-white"></i> ' . __('New Shipment'), array('controller' => 'shipments', 'action' => 'add'), array('class' => 'btn btn-primary', 'escape' => false)); ?>				</div><!-- /.actions -->

@@ -73,7 +73,14 @@ class Shipment extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        )
+        ),
+        'Subcategory' => array(
+            'className' => 'Subcategory',
+            'foreignKey' => 'subcategory_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+	)
     );
 
     /**
@@ -117,6 +124,8 @@ class Shipment extends AppModel {
             'finderQuery' => '',
         )
     );
+    
+  
 
     public function isOwnedBy($post, $user) {
         return $this->field('id', array('id' => $post, 'user_id' => $user)) !== false;

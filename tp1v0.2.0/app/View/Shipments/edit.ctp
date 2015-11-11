@@ -93,6 +93,12 @@
                 <div class="form-group">
 						<?php echo $this->Form->input('Product', array('multiple' => 'checkbox'));?>
                 </div><!-- .form-group -->
+                <div class="form-group">
+                                                <?php echo $this->Form->input('category_id'); ?>
+                </div><!-- .form-group -->
+                <div class="form-group">
+                                                <?php echo $this->Form->input('subcategory_id'); ?>
+                </div><!-- .form-group -->
 
 					<?php echo $this->Form->submit('Submit', array('class' => 'btn btn-large btn-primary')); ?>
 
@@ -105,3 +111,19 @@
     </div><!-- /#page-content .col-sm-9 -->
 
 </div><!-- /#page-container .row-fluid -->
+<?php
+$this->Js->get('#ShipmentCategoryId')->event('change', $this->Js->request(array(
+            'controller' => 'subcategories',
+            'action' => 'getByCategory'
+                ), array(
+            'update' => '#ShipmentSubcategoryId',
+            'async' => true,
+            'method' => 'post',
+            'dataExpression' => true,
+            'data' => $this->Js->serializeForm(array(
+                'isForm' => true,
+                'inline' => true
+            ))
+        ))
+);
+?>

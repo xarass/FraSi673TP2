@@ -63,7 +63,7 @@
 
         <div class="harbors form">
 
-			<?php echo $this->Form->create('Harbor', array('role' => 'form')); ?>
+			<?php echo $this->Form->create('Harbor', array('role' => 'form', 'type' => 'file')); ?>
 
             <fieldset>
 
@@ -72,6 +72,9 @@
                 </div><!-- .form-group -->
                 <div class="form-group">
 						<?php echo $this->Form->input('location', array('class' => 'form-control')); ?>
+                </div><!-- .form-group -->
+                <div class="form-group">
+						<?php echo $this->Form->input('filename', array('type' => 'file' )); ?>
                 </div><!-- .form-group -->
 
 					<?php echo $this->Form->submit('Submit', array('class' => 'btn btn-large btn-primary')); ?>

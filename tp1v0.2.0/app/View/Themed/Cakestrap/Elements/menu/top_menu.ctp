@@ -31,7 +31,14 @@
                         'controller' => 'users',
                         'action' => 'register')
                     );
+                    
+                    
                 }
+                echo "</li><li>";
+                echo $this->Html->link(__('About'), array(
+                        'controller' => 'pages',
+                        'action' => 'display', 'about')
+                    );  
                 ?>
             </li>
 

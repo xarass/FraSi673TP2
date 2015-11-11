@@ -1,4 +1,3 @@
-
 <div id="page-container" class="row">
 
     <div id="sidebar" class="col-sm-3">
@@ -67,7 +66,7 @@
             <fieldset>
 
                 <div class="form-group">
-						<?php echo $this->Form->input('name', array('class' => 'form-control')); ?>
+						<?php echo $this->Form->input('name', array('class' => 'form-control', 'id' => 'autocomplete')); ?>
                 </div><!-- .form-group -->
                 <div class="form-group">
 						<?php echo $this->Form->input('Shipment', array('multiple' => 'checkbox'));?>
@@ -84,3 +83,7 @@
     </div><!-- /#page-content .col-sm-9 -->
 
 </div><!-- /#page-container .row-fluid -->
+
+  <?php $this->Html->script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js', array('inline' => false));
+        $this->Html->script('View/Products/add', array('inline' => false));
+  ?>

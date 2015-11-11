@@ -116,6 +116,20 @@
                                 ?>
                                 &nbsp;</td> 
                         </tr>
+                        <tr>		
+                            <td><strong><?php echo __('truc'); ?></strong></td>
+                            <td>
+                                <?php echo h($category['Category']['name']); ?>
+                                &nbsp;
+                            </td>
+                        </tr> 
+                        <tr>		
+                            <td><strong><?php echo __('Type'); ?></strong></td>
+                            <td>
+                                <?php echo h($shipment['Subcategory']['name']); ?>
+                                &nbsp;
+                            </td>
+                        </tr>                        
                     </tbody>
                 </table><!-- /.table table-striped table-bordered -->
             </div><!-- /.table-responsive -->

@@ -97,4 +97,6 @@
     </div><!-- /#page-content .col-sm-9 -->
 
 </div><!-- /#page-container .row-fluid -->
-<?php $this->Html->script('View/Products/add', array('inline' => false));?>
+ <?php $this->Html->script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js', array('inline' => false));
+        $this->Html->script('View/Products/edit', array('inline' => false));
+  ?>

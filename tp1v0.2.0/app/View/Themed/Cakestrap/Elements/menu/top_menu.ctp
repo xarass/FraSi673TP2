@@ -13,12 +13,17 @@
             <li class="active">
                 <?php
                 if ($this->Session->check('Auth.User')) {
-                    echo $this->Html->link(__('Hello ')  . $this->Session->read('Auth.User.username'), array('controller' => 'users', 'action' => 'view', $this->Session->read('Auth.User.id')));
+                    echo $this->Html->link(__('Hello ') . $this->Session->read('Auth.User.username'), array('controller' => 'users', 'action' => 'view', $this->Session->read('Auth.User.id')));
                     echo "</li><li>";
 
                     echo $this->Html->link(__('[Logout]'), array(
                         'controller' => 'users',
                         'action' => 'logout'));
+                     echo "</li><li>";
+
+                    if (!$this->Session->read('Auth.User.active')) {
+                        echo $this->Html->link(__('Resend mail'), array('controller' => 'users', 'action' => 'send_mail', $this->Session->read('Auth.User.email'), $this->Session->read('Auth.User.username'), $this->Session->read('Auth.User.id')));
+                    }
                 } else {
                     echo $this->Html->link(__('[Login]'), array(
                         'controller' => 'users',
@@ -31,25 +36,25 @@
                         'controller' => 'users',
                         'action' => 'register')
                     );
-                    
-                    
                 }
                 echo "</li><li>";
                 echo $this->Html->link(__('About'), array(
-                        'controller' => 'pages',
-                        'action' => 'display', 'about')
-                    );  
+                    'controller' => 'pages',
+                    'action' => 'display', 'about')
+                );
                 ?>
             </li>
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= __('Language') ?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <?php echo $this->I18n->flagSwitcher(array(
-                    'class' => 'languages',
-                    'id' => 'language-switcher'
-                    )); ?>
-                    
+<?php
+echo $this->I18n->flagSwitcher(array(
+    'class' => 'languages',
+    'id' => 'language-switcher'
+));
+?>
+
                 </ul>
             </li>
         </ul><!-- /.nav navbar-nav -->
